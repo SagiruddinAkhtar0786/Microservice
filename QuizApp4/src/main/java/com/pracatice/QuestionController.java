@@ -11,7 +11,7 @@ public class QuestionController {
 	
 	@GetMapping("allQuestion")
 	public String getAllQuestion() {
-		return "hi";
+		return "hi hello";
 	}
 
 }
