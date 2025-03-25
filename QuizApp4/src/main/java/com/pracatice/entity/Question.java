@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Question {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String questionTitle;
 	private String option1;
@@ -24,6 +24,7 @@ public class Question {
 	private String option4;
 	private String rightAnswer;
 	private String difficultLevel;
+	private String category;
 	
 	
 	
