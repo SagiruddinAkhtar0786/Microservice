@@ -1,9 +1,12 @@
 package com.pracatice.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.pracatice.DAO.QuestionDao;
@@ -19,21 +22,41 @@ public class QuestionServie {
 	@Autowired
 	private QuestionDao questionDao;
 	
-	public List<Question> getAllQuestion(){
+	public ResponseEntity<List<Question>> getAllQuestion(){
 		//questionDao.getAllQuestion();
-		return questionDao.findAll();
+		try {
+			
+			return new ResponseEntity<>(questionDao.findAll(),HttpStatus.OK); // status code handling
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(),HttpStatus.BAD_REQUEST); // exception handling
+
 	}
 	
 	
-	public List<Question> getQuestionByCategory(String categary) {
+	public ResponseEntity<List<Question>> getQuestionByCategory(String categary) {
 		// TODO Auto-generated method stub
-		return questionDao.findByCategory(categary);
+		try {
+			
+			return new ResponseEntity<>(questionDao.findByCategory(categary),HttpStatus.OK);
+		}catch(Exception e) {
+		e.printStackTrace();
 	}
-	
-	public String addQuestion(Question ques) {
+		return new ResponseEntity<>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
+
+	}
+	public ResponseEntity<String> addQuestion(Question ques) {
 		//return questionDao.addQuestion(ques);
-		questionDao.save(ques);
-		return "successfull added";
+		try {
+			questionDao.save(ques);
+			return new ResponseEntity<>("successfull added",HttpStatus.CREATED);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>("something went wrong",HttpStatus.BAD_REQUEST);
+
 	}
 
 

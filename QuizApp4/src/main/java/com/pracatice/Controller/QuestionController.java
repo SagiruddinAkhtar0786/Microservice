@@ -1,8 +1,11 @@
 package com.pracatice.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,19 +26,29 @@ public class QuestionController {
 	private QuestionServie questionService;
 	
 	@GetMapping("allQuestion")
-	public List<Question> getAllQuestion() {
+	public ResponseEntity<List<Question>> getAllQuestion() {
 		//return "hi These are your question!!!!!!!";
-		return questionService.getAllQuestion();
+		try {
+			return questionService.getAllQuestion();
+	       // return new ResponseEntity<>(questionService.getAllQuestion(), HttpStatus.OK);
+
+
+		}catch(Exception e) {
+			e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+
+		}
+	//	return (new ArrayList<>());
 	}
 	
 	
 	@GetMapping("category/{category}")
-	public List<Question> getQuestionByCategory(@PathVariable String category){
+	public ResponseEntity<List<Question>> getQuestionByCategory(@PathVariable String category){
 		return questionService.getQuestionByCategory(category);
 	}
 	
 	@PostMapping("addQuestion") // to create the resource we need postman
-	public String addQuestion(@RequestBody Question question) {
+	public ResponseEntity<String> addQuestion(@RequestBody Question question) {
 		return questionService.addQuestion(question);
 	}
 	
