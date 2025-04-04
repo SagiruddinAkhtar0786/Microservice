@@ -1,6 +1,6 @@
 package com.pracatice.Controller;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +25,36 @@ public class QuestionController {
 	@Autowired
 	private QuestionServie questionService;
 	
-	@GetMapping("allQuestion")
+	/*@GetMapping("/all-question")
 	public ResponseEntity<List<Question>> getAllQuestion() {
-		//return "hi These are your question!!!!!!!";
-		try {
-			return questionService.getAllQuestion();
-	       // return new ResponseEntity<>(questionService.getAllQuestion(), HttpStatus.OK);
-
-
-		}catch(Exception e) {
-			e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
-
-		}
-	//	return (new ArrayList<>());
+	    List<Question> dummyList = new ArrayList<>();
+	    dummyList.add(new Question());
+	    return new ResponseEntity<>(dummyList, HttpStatus.OK);
+	}*/
+	
+	@GetMapping("/all-question")
+	public String getAllQuestion() {
+	  System.out.println("this is testing part");
+	    return "abc";
 	}
+	
+
+	
+//	@GetMapping("/all-question")
+//	public ResponseEntity<List<Question>> getAllQuestion() {
+//		//return "hi These are your question!!!!!!!";
+//		try {
+//			return questionService.getAllQuestion();
+//	       // return new ResponseEntity<>(questionService.getAllQuestion(), HttpStatus.OK);
+//
+//
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+//
+//		}
+//	//	return (new ArrayList<>());
+//	}
 	
 	
 	@GetMapping("category/{category}")
