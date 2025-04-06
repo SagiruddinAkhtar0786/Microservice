@@ -3,6 +3,7 @@ package com.pracatice.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.pracatice.DAO.QuestionDao;
 import com.pracatice.entity.Question;
+//import com.pracatice.entity.Quiz;
+import com.pracatice.entity.QuestionWrapper;
+import com.pracatice.entity.Response;
 
 @Service
 public class QuestionServie {
@@ -77,6 +81,66 @@ public class QuestionServie {
 	}
 	else
 		return "QUESTION  WITH ID	"+id+" not found";
+	}
+
+
+	public ResponseEntity<List<Integer>> getQuestionsForQuiz(String categoryName, Integer numQuestion) {
+		// TODO Auto-generated method stub
+		
+		List<Integer> questions = questionDao.findRandmQuesBycategory(categoryName);
+		questions = questions.stream().limit(numQuestion).collect(Collectors.toList());
+		
+		return new ResponseEntity<>(questions,HttpStatus.OK);
+		//return null;
+	}
+
+
+	public ResponseEntity<List<QuestionWrapper>> getQuestionsFromId(List<Integer> questionsIds) {
+		// TODO Auto-generated method stub
+		
+		List<QuestionWrapper> wrappers = new ArrayList<>();
+		List<Question> questions = new ArrayList<>();
+		
+		for(Integer id : questionsIds) {
+			questions.add(questionDao.findById(id).get());
+		}
+		
+		for(Question question : questions) {
+			QuestionWrapper QuesWrap =new QuestionWrapper();
+			
+			QuesWrap.setId(question.getId());
+			QuesWrap.setQuestionTitle(question.getQuestionTitle());
+			QuesWrap.setOption1(question.getOption1());
+			QuesWrap.setOption2(question.getOption2());
+			QuesWrap.setOption3(question.getOption3());
+			QuesWrap.setOption4(question.getOption4());
+			wrappers.add(QuesWrap);
+		}
+		return new ResponseEntity<>(wrappers,HttpStatus.OK);
+	}
+
+
+	public ResponseEntity<Integer> getScore(List<Response> responses) {
+		// TODO Auto-generated method stub
+		
+		
+		int right = 0;
+		
+		for(Response res : responses) {
+			//Optional<Question> questionOptional = questionDao.findById(res.getId().get());
+			Question question = questionDao.findById(res.getId()).get();
+		System.out.println(res.getResponse() +" :: "+question.getRightAnswer());
+			
+			if (res.getResponse().trim().equalsIgnoreCase(question.getRightAnswer().trim())) {
+			    right++;
+			}
+
+			
+		}
+			
+		return new ResponseEntity<>(right,HttpStatus.OK);
+	
+		//return null;
 	}
 
 }

@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pracatice.Service.QuestionServie;
 import com.pracatice.entity.Question;
+import com.pracatice.entity.QuestionWrapper;
+import com.pracatice.entity.Response;
 
 @RestController
 @RequestMapping("question")
@@ -86,6 +89,21 @@ public class QuestionController {
 	@PutMapping("update/{upId}")
 	public String updateQuestion(@PathVariable("upId") Integer id,@RequestBody Question question){
 		return questionService.updateQuestionById(id,question);
+	}
+	
+	@GetMapping("Generate")
+	public ResponseEntity<List<Integer>> getQuestionsForQuiz(@RequestParam String categoryName,@RequestParam Integer numQuestion){
+		return questionService.getQuestionsForQuiz(categoryName,numQuestion);
+	}
+	
+	@PostMapping("getQuestions")  //http://localhost:8081/question/getQuestions
+	public ResponseEntity<List<QuestionWrapper>> getQuestionFromId(@RequestBody List<Integer> questionsId){
+		return questionService.getQuestionsFromId(questionsId);
+	}
+	
+	@PostMapping("getScore") //http://localhost:8081/question/getScore
+	public ResponseEntity<Integer> getScore(@RequestBody List<Response> responses){
+		return questionService.getScore(responses);
 	}
 
 }
