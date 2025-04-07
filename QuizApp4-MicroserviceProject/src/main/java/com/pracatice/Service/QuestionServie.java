@@ -88,7 +88,7 @@ public class QuestionServie {
 		// TODO Auto-generated method stub
 		
 		List<Integer> questions = questionDao.findRandmQuesBycategory(categoryName);
-		questions = questions.stream().limit(numQuestion).collect(Collectors.toList());
+		questions = questions.stream().limit(numQuestion).collect(Collectors.toList()); 
 		
 		return new ResponseEntity<>(questions,HttpStatus.OK);
 		//return null;
